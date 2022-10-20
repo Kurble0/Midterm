@@ -16,24 +16,24 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
-import { deleteTodo, toggleTodoStatus } from "../api/todo";
+import { deletePerson, togglePersonStatus } from "../api/person";
 //import { async } from "@firebase/util";
 //difine jsx comp for the list
-const TodoList = () => {
-    const [todos, setTodos] = React.useState([]);
+const PersonList = () => {
+    const [person, setPerson] = React.useState([]);
     const { user } = useAuth() || {};
     const toast = useToast();
     // tell react to update the ui with refreshData()!
     useEffect(
         () => {
             if (!user) {
-                setTodos([]);
+                setPersons([]);
                 return;
              }
              //if code continues to here, user is logged in
              //do query on firestore collection
              const q = query(
-                 collection(db, "todo"),
+                 collection(db, "person"),
                  where("user", "==", user.uid)
              );
              //since query() is async, here we setup a event handler with firebase
@@ -53,22 +53,22 @@ const TodoList = () => {
                          }
                      );
                      //once we loop thru forEach and we have arry of docs in ar
-                     setTodos(ar);
+                     setPersons(ar);
                  }
              );
             
         },
         [user]
     );
-    //build nested function to delete a todo
-    const handleTodoDelete = async (id) => {
+    //build nested function to delete a person
+    const handlePersonDelete = async (id) => {
         if(
             confirm("Are you sure you want to delete?")
         ) {
-            deleteTodo(id);
+            deletePerson(id);
             toast(
                {
-                Title: "Todo deleted successfully",
+                Title: "Person deleted successfully",
                 status: "success"
                } 
             );
@@ -77,7 +77,7 @@ const TodoList = () => {
     //build nested function to toggle status
     const handleToggle = async (id, status) => {
         const newStatus = status == "completed" ? "pending" : "completed";
-        await toggleTodoStatus(
+        await togglePersonStatus(
             {
                 docId: id,
                 status: newStatus
@@ -86,7 +86,7 @@ const TodoList = () => {
         );
         toast(
             {
-               title:`Todo marked ${newStatus}`, 
+               title:`Person marked ${newStatus}`, 
                status: newStatus == "completed" ? "success" : "warning",
             }
         );
@@ -95,9 +95,9 @@ const TodoList = () => {
     return(
         <Box mt={5}>
         <SimpleGrid column={{base: 1, md: 3 }} spacing={8}>
-        { todos &&
-        todos.map(
-            (todo) => (
+        { persons &&
+        persons.map(
+            (person) => (
         <Box
         p={3}
         boxShadow="2xl"
@@ -106,7 +106,7 @@ const TodoList = () => {
         _hover={{ boxShadow: "sm" }}
          >
             <Heading as="h3" fontSize={"xl"}>
-            {todos.title}
+            {persons.title}
             {" "}
             <Badge
             color="red.500"
@@ -118,12 +118,12 @@ const TodoList = () => {
             }}
             float="right"
             size="xs"
-            onClick={ () => handleTodoDelete(todo.id) }
+            onClick={ () => handlePersonDelete(person.id) }
             >
                 <FaTrash />
             </Badge>
             <Badge
-            color={todo.status == "pending" ? "gray.500" : "green.500"}
+            color={person.status == "pending" ? "gray.500" : "green.500"}
             bg="inherit"
             transition={"0.2s"}
             _hover={{
@@ -133,20 +133,20 @@ const TodoList = () => {
             }}
             float="right"
             size="xs"
-            onClick={ () => handleToggle(todo.id, todo.status) }
+            onClick={ () => handleToggle(person.id, person.status) }
             >
-                {todo.status == "pending" ? <FaToggleOff /> : <FaToggleOn />}
+                {person.status == "pending" ? <FaToggleOff /> : <FaToggleOn />}
             </Badge>
             <Badge
             float="right"
             opacity="0.8"
-            bg={ todo.status == "pending" ? "yellow.500" : "green.500"}
+            bg={ person.status == "pending" ? "yellow.500" : "green.500"}
             >
-                {todo.status }
+                {person.status }
             </Badge>
             </Heading>
             <Text>
-            {todo.description }
+            {person.description }
             </Text>
         </Box>
          )
@@ -156,4 +156,4 @@ const TodoList = () => {
     </Box>
     );
 };
-export default TodoList;
+export default PersonList;
