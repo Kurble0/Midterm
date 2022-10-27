@@ -10,7 +10,9 @@ import {
     Stack,
     Select,
     useToast,
+    Text
 } from"@chakra-ui/react";
+import { Link } from '@chakra-ui/react'
 //bring in useAuth from our hooks so we can make sure to logged in for this comp
 import useAuth from "../hooks/useAuth";
 //bring addTodo function from our api
@@ -22,6 +24,7 @@ import { addTodo } from "../api/todo";
 const AddTodo = () => {
     //every form control (text input) we want to associate a react state
     const [ title, setTitle] = React.useState("");
+    const [ contacts, setContacts] = React.useState("");
     const [ description, setDescription] = React.useState("");
     const [ status, setStatus] = React.useState("pending");
     const [ isLoading, setIsLoading] = React.useState(false);
@@ -47,6 +50,7 @@ const AddTodo = () => {
         const todo = {
             title,
             description,
+            contacts,
             status,
             userId: user.userId
         };
@@ -55,6 +59,7 @@ const AddTodo = () => {
         //once we get past the previous, the firestore doc is made (or an error)
         setIsLoading(false);
         setTitle("");
+        setContacts()
         setDescription("");
         setStatus("pending");
         //show a floaty with status update
@@ -74,11 +79,22 @@ const AddTodo = () => {
         value={title}
         onChange={ (e) => setTitle( e.target.value ) }
         />
+
+<Input
+        placeholder="Your Name"
+        value={ contacts}
+        onChange={ (e) => setContacts( e.target.value ) }
+        />
+
         <Textarea
     placeholder= "Description"
     value={description}
     onChange={ (e) => setDescription( e.target.value ) }
         />
+        
+      <Link href='http://localhost:3000/add-person' isExternal>
+  Click me to get to Add-Person!
+</Link>
         <Select
         value={status} 
          onChange={ (e) => setStatus( e.target.value ) }>
@@ -105,6 +121,8 @@ const AddTodo = () => {
             Add Todo
          </Button>
             </Stack>
+            <Text>Main documents type: "todo/ " and place Admin, User1, or 
+csueFMDVyPLhSjoPTxrD</Text>
             </Box>
     );
 };

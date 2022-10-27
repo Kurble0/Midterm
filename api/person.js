@@ -11,6 +11,7 @@ import {
 //import { async } from "@firebase/util";
 
 const addPerson = async ( { userId, age, description, status,  username,  hair} ) => {
+    console.log("addPerson");
     
     try{
         await addDoc(
@@ -30,6 +31,7 @@ const addPerson = async ( { userId, age, description, status,  username,  hair} 
 }
 };
 const togglePersonStatus = async ( { docId, status } ) => {
+    console.log("togglePersonStatus");
     try {
         //gran a ref tp a existing firestore doc by id
         const PersonRef = doc( db, "Person", docId );
@@ -47,6 +49,7 @@ const togglePersonStatus = async ( { docId, status } ) => {
 };
 
 const deletePerson = async ( docId ) => {
+    console.log("deletePerson");
     try{
         //gran a ref tp a existing firestore doc by id
         const PersonRef = doc( db, "Person", docId );

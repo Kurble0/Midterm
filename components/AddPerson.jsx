@@ -11,17 +11,19 @@ import {
     Select,
     useToast,
 } from"@chakra-ui/react";
+import { Link } from '@chakra-ui/react';
 //bring in useAuth from our hooks so we can make sure to logged in for this comp
 import useAuth from "../hooks/useAuth";
 //bring AddPerson function from our api
-import { AddPerson } from "../api/person";
+import { addPerson } from "../api/person";
 //import { userAgent } from "next/server";
 //import { async } from "@firebase/util";
 
 //define react jsx component
-const addPerson = () => {
+const AddPerson = () => {
     //every form control (text input) we want to associate a react state
     const [ title, setTitle] = React.useState("");
+    const [ contacts, setContacts] = React.useState("");
     const [ description, setDescription] = React.useState("");
     const [ status, setStatus] = React.useState("pending");
     const [ isLoading, setIsLoading] = React.useState(false);
@@ -46,6 +48,7 @@ const addPerson = () => {
         //lets build a obj val template
         const person = {
             title,
+            contacts,
             description,
             status,
             userId: user.userId
@@ -74,11 +77,22 @@ const addPerson = () => {
         value={title}
         onChange={ (e) => setTitle( e.target.value ) }
         />
+        <Input
+        placeholder="The Name"
+        value={ contacts}
+        onChange={ (e) => setContacts( e.target.value ) }
+        />
+
         <Textarea
     placeholder= "Description"
     value={description}
     onChange={ (e) => setDescription( e.target.value ) }
         />
+
+<Link href='http://localhost:3000/add-person' isExternal>
+  Click me to get back to Add-todo!
+</Link>
+
         <Select
         value={status} 
          onChange={ (e) => setStatus( e.target.value ) }>
@@ -109,4 +123,4 @@ const addPerson = () => {
     );
 };
 //dont forget to export the component function
-export default addPerson;
+export default AddPerson;

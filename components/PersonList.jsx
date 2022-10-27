@@ -27,7 +27,7 @@ const PersonList = () => {
     useEffect(
         () => {
             if (!user) {
-                setPersons([]);
+                setPerson([]);
                 return;
              }
              //if code continues to here, user is logged in
@@ -53,7 +53,7 @@ const PersonList = () => {
                          }
                      );
                      //once we loop thru forEach and we have arry of docs in ar
-                     setPersons(ar);
+                     setPerson(ar);
                  }
              );
             
@@ -95,8 +95,8 @@ const PersonList = () => {
     return(
         <Box mt={5}>
         <SimpleGrid column={{base: 1, md: 3 }} spacing={8}>
-        { persons &&
-        persons.map(
+        { person &&
+        person.map(
             (person) => (
         <Box
         p={3}
@@ -106,7 +106,7 @@ const PersonList = () => {
         _hover={{ boxShadow: "sm" }}
          >
             <Heading as="h3" fontSize={"xl"}>
-            {persons.title}
+            {person.title}
             {" "}
             <Badge
             color="red.500"

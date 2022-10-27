@@ -67,6 +67,7 @@ const Auth = () => {
                 )}
             </Box>
     </Box>
+    
     );
 };
 //export!
